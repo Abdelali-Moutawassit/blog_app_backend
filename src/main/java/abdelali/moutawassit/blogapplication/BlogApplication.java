@@ -1,7 +1,11 @@
 package abdelali.moutawassit.blogapplication;
 
+import abdelali.moutawassit.blogapplication.model.Comment;
+import abdelali.moutawassit.blogapplication.model.CommentReaction;
 import abdelali.moutawassit.blogapplication.model.Post;
 import abdelali.moutawassit.blogapplication.model.User;
+import abdelali.moutawassit.blogapplication.repository.CommentReactionRepository;
+import abdelali.moutawassit.blogapplication.repository.CommentRepository;
 import abdelali.moutawassit.blogapplication.repository.PostRepository;
 import abdelali.moutawassit.blogapplication.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -10,7 +14,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 @SpringBootApplication
 public class BlogApplication {
@@ -20,7 +27,7 @@ public class BlogApplication {
     }
 
     @Bean
-    CommandLineRunner initUsers(UserRepository userRepository, PostRepository postRepository) {
+    CommandLineRunner initUsers(UserRepository userRepository, PostRepository postRepository, CommentRepository commentRepository, CommentReactionRepository commentReactionRepository) {
         return args -> {
             if (userRepository.count() == 0) {
                 List<User> users = List.of(
@@ -65,6 +72,50 @@ public class BlogApplication {
                         postRepository.save(post2);
                     }
                     System.out.println("✅ Posts enregistrés avec succès !");
+
+                    // Enregistrer des commentaires
+                    List<Post> allPosts = postRepository.findAll();
+                    List<Comment> comments = new ArrayList<>();
+
+                    for (Post post : allPosts) {
+                        for (User commenter : allUsers) {
+                            Comment comment = Comment.builder()
+                                    .content("Commentaire de " + commenter.getUsername() + " sur le post de " + post.getUser().getUsername())
+                                    .createdAt(LocalDateTime.now())
+                                    .user(commenter)
+                                    .post(post)
+                                    .likeCount(0)
+                                    .build();
+                            comments.add(comment);
+                        }
+                    }
+
+                    commentRepository.saveAll(comments);
+                    System.out.println("✅ Commentaires enregistrés : " + comments.size());
+
+                    // Ajouter des réactions aux commentaires
+                    List<CommentReaction> reactions = new ArrayList<>();
+                    Random random = new Random();
+                    CommentReaction.ReactionType[] types = CommentReaction.ReactionType.values();
+
+                    for (Comment comment : comments) {
+                        // Chaque commentaire reçoit 1 à 3 réactions de différents utilisateurs
+                        Collections.shuffle(allUsers);
+                        int reactionCount = 1 + random.nextInt(3);
+                        for (int i = 0; i < reactionCount; i++) {
+                            User reactingUser = allUsers.get(i);
+                            CommentReaction reaction = CommentReaction.builder()
+                                    .comment(comment)
+                                    .user(reactingUser)
+                                    .type(types[random.nextInt(types.length)])
+                                    .reactedAt(LocalDateTime.now())
+                                    .build();
+                            reactions.add(reaction);
+                        }
+                    }
+
+                    commentReactionRepository.saveAll(reactions);
+                    System.out.println("✅ Réactions enregistrées : " + reactions.size());
                 }
             }
         };
