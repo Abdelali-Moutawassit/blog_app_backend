@@ -1,13 +1,7 @@
 package abdelali.moutawassit.blogapplication;
 
-import abdelali.moutawassit.blogapplication.model.Comment;
-import abdelali.moutawassit.blogapplication.model.CommentReaction;
-import abdelali.moutawassit.blogapplication.model.Post;
-import abdelali.moutawassit.blogapplication.model.User;
-import abdelali.moutawassit.blogapplication.repository.CommentReactionRepository;
-import abdelali.moutawassit.blogapplication.repository.CommentRepository;
-import abdelali.moutawassit.blogapplication.repository.PostRepository;
-import abdelali.moutawassit.blogapplication.repository.UserRepository;
+import abdelali.moutawassit.blogapplication.model.*;
+import abdelali.moutawassit.blogapplication.repository.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -27,7 +21,11 @@ public class BlogApplication {
     }
 
     @Bean
-    CommandLineRunner initUsers(UserRepository userRepository, PostRepository postRepository, CommentRepository commentRepository, CommentReactionRepository commentReactionRepository) {
+    CommandLineRunner initUsers(UserRepository userRepository,
+                                PostRepository postRepository,
+                                CommentRepository commentRepository,
+                                CommentReactionRepository commentReactionRepository,
+                                PostReactionRepository postReactionRepository) {
         return args -> {
             if (userRepository.count() == 0) {
                 List<User> users = List.of(
@@ -116,6 +114,34 @@ public class BlogApplication {
 
                     commentReactionRepository.saveAll(reactions);
                     System.out.println("✅ Réactions enregistrées : " + reactions.size());
+
+                    // Ajouter des réactions aux posts
+                    List<PostReaction> postReactions = new ArrayList<>();
+                    PostReaction.ReactionType[] postTypes = PostReaction.ReactionType.values();
+
+                    for (Post post : postRepository.findAll()) {
+                        // Chaque post reçoit 1 à 3 réactions de différents utilisateurs
+                        Collections.shuffle(allUsers);
+                        int reactionCount = 1 + random.nextInt(3); // entre 1 et 3 réactions
+                        for (int i = 0; i < reactionCount; i++) {
+                            User reactingUser = allUsers.get(i);
+
+                            // Vérifie que l'utilisateur ne réagit pas à son propre post
+                            if (!reactingUser.getId().equals(post.getUser().getId())) {
+                                PostReaction postReaction = PostReaction.builder()
+                                        .post(post)
+                                        .user(reactingUser)
+                                        .type(postTypes[random.nextInt(postTypes.length)])
+                                        .reactedAt(LocalDateTime.now())
+                                        .build();
+                                postReactions.add(postReaction);
+                            }
+                        }
+                    }
+
+                    postReactionRepository.saveAll(postReactions);
+                    System.out.println("✅ Réactions aux posts enregistrées : " + postReactions.size());
+
                 }
             }
         };

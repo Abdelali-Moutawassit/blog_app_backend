@@ -1,5 +1,6 @@
 package abdelali.moutawassit.blogapplication.service;
 
+import abdelali.moutawassit.blogapplication.dto.CommentReactionResponseDTO;
 import abdelali.moutawassit.blogapplication.dto.CommentRequestDTO;
 import abdelali.moutawassit.blogapplication.dto.CommentResponseDTO;
 import abdelali.moutawassit.blogapplication.exception.ResourceNotFoundException;
@@ -25,6 +26,7 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
     private final PostRepository postRepository;
+    private  final CommentReactionService commentReactionService;
 
     // Créer un commentaire lié à un user et un post
     public CommentResponseDTO createComment(CommentRequestDTO dto, Long userId, Long postId) {
@@ -43,6 +45,10 @@ public class CommentService {
     public CommentResponseDTO getCommentById(Long commentId) {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new ResourceNotFoundException("Commentaire non trouvé avec l'id: " + commentId));
+
+        List<CommentReactionResponseDTO> reactions = commentReactionService.getReactionsForComment(comment.getId());
+        int nombreReaction = reactions.size();
+        comment.setLikeCount(nombreReaction);
         return CommentMapper.toResponseDTO(comment);
     }
 
