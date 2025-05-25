@@ -1,0 +1,72 @@
+package abdelali.moutawassit.blogapplication;
+
+import abdelali.moutawassit.blogapplication.model.Post;
+import abdelali.moutawassit.blogapplication.model.User;
+import abdelali.moutawassit.blogapplication.repository.PostRepository;
+import abdelali.moutawassit.blogapplication.repository.UserRepository;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+@SpringBootApplication
+public class BlogApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(BlogApplication.class, args);
+    }
+
+    @Bean
+    CommandLineRunner initUsers(UserRepository userRepository, PostRepository postRepository) {
+        return args -> {
+            if (userRepository.count() == 0) {
+                List<User> users = List.of(
+                        User.builder().fullName("Alice Johnson").username("alicej").email("alice@example.com").password("pass123").bio("Dév web").profileImageUrl("url1").createdAt(LocalDateTime.now()).build(),
+                        User.builder().fullName("Bob Smith").username("bobsmith").email("bob@example.com").password("pass123").bio("Photographe").profileImageUrl("url2").createdAt(LocalDateTime.now()).build(),
+                        User.builder().fullName("Charlie Lee").username("charlie").email("charlie@example.com").password("pass123").bio("Étudiant").profileImageUrl("url3").createdAt(LocalDateTime.now()).build(),
+                        User.builder().fullName("Diana Prince").username("diana").email("diana@example.com").password("pass123").bio("Superhéroïne").profileImageUrl("url4").createdAt(LocalDateTime.now()).build(),
+                        User.builder().fullName("Elon Musk").username("elonm").email("elon@example.com").password("pass123").bio("Visionnaire").profileImageUrl("url5").createdAt(LocalDateTime.now()).build(),
+                        User.builder().fullName("Fatima Zahra").username("fatimaz").email("fatima@example.com").password("pass123").bio("Dév mobile").profileImageUrl("url6").createdAt(LocalDateTime.now()).build(),
+                        User.builder().fullName("George Lucas").username("glucas").email("george@example.com").password("pass123").bio("Réalisateur").profileImageUrl("url7").createdAt(LocalDateTime.now()).build(),
+                        User.builder().fullName("Hassan Rami").username("hassr").email("hassan@example.com").password("pass123").bio("UX/UI Designer").profileImageUrl("url8").createdAt(LocalDateTime.now()).build(),
+                        User.builder().fullName("Ismail Ait").username("ismaila").email("ismail@example.com").password("pass123").bio("Freelancer").profileImageUrl("url9").createdAt(LocalDateTime.now()).build(),
+                        User.builder().fullName("John Doe").username("johnd").email("john@example.com").password("pass123").bio("Dév Java").profileImageUrl("url10").createdAt(LocalDateTime.now()).build()
+                );
+                userRepository.saveAll(users);
+                System.out.println("✅ 10 utilisateurs enregistrés avec succès !");
+
+                List<User> allUsers = userRepository.findAll();
+
+                if (postRepository.count() == 0) {
+                    for (User user : allUsers) {
+                        Post post1 = Post.builder()
+                                .user(user)
+                                .content("Ceci est un post de " + user.getUsername() + ".")
+                                .imageUrl(null)
+                                .videoUrl(null)
+                                .createdAt(LocalDateTime.now())
+                                .likeCount(0)
+                                .shareCount(0)
+                                .build();
+
+                        Post post2 = Post.builder()
+                                .user(user)
+                                .content("Un autre post intéressant par " + user.getUsername() + ".")
+                                .imageUrl("https://example.com/image.png")
+                                .createdAt(LocalDateTime.now())
+                                .likeCount(0)
+                                .shareCount(0)
+                                .build();
+
+                        postRepository.save(post1);
+                        postRepository.save(post2);
+                    }
+                    System.out.println("✅ Posts enregistrés avec succès !");
+                }
+            }
+        };
+    }
+}
