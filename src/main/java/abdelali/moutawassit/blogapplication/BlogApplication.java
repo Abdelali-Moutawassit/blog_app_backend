@@ -25,7 +25,8 @@ public class BlogApplication {
                                 PostRepository postRepository,
                                 CommentRepository commentRepository,
                                 CommentReactionRepository commentReactionRepository,
-                                PostReactionRepository postReactionRepository) {
+                                PostReactionRepository postReactionRepository,
+                                SavedPostRepository savedPostRepository) {
         return args -> {
             if (userRepository.count() == 0) {
                 List<User> users = List.of(
@@ -141,6 +142,33 @@ public class BlogApplication {
 
                     postReactionRepository.saveAll(postReactions);
                     System.out.println("✅ Réactions aux posts enregistrées : " + postReactions.size());
+
+                    // Enregistrer des posts sauvegardés
+                    List<Post> allPostss = postRepository.findAll();
+                    List<User> allUserss = userRepository.findAll();
+                    List<SavedPost> savedPosts = new ArrayList<>();
+
+                    for (User user : allUsers) {
+                        // Chaque utilisateur sauvegarde entre 1 et 3 posts aléatoires (différents des siens)
+                        Collections.shuffle(allPosts);
+                        int savedCount = 1 + random.nextInt(3);
+
+                        int count = 0;
+                        for (Post post : allPosts) {
+                            if (!post.getUser().getId().equals(user.getId()) && count < savedCount) {
+                                SavedPost savedPost = SavedPost.builder()
+                                        .user(user)
+                                        .post(post)
+                                        .savedAt(LocalDateTime.now())
+                                        .build();
+                                savedPosts.add(savedPost);
+                                count++;
+                            }
+                        }
+                    }
+
+                    savedPostRepository.saveAll(savedPosts);
+                    System.out.println("✅ SavedPosts enregistrés : " + savedPosts.size());
 
                 }
             }
