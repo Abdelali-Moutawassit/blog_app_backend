@@ -8,10 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @SpringBootApplication
 public class BlogApplication {
@@ -43,6 +40,7 @@ public class BlogApplication {
                 );
                 userRepository.saveAll(users);
                 System.out.println("✅ 10 utilisateurs enregistrés avec succès !");
+
 
                 List<User> allUsers = userRepository.findAll();
 

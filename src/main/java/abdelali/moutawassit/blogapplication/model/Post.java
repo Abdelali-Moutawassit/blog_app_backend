@@ -19,10 +19,10 @@ public class Post {
     private Long id;
 
     @Column(columnDefinition = "TEXT")
-    private String content; // texte du post
+    private String content;
 
-    private String imageUrl; // facultatif
-    private String videoUrl; // facultatif
+    private String imageUrl;
+    private String videoUrl;
 
     private LocalDateTime createdAt;
 

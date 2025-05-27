@@ -32,6 +32,7 @@ public class PostService {
                 .orElseThrow(() -> new IllegalArgumentException("User not found with id " + userId));
 
         Post post = PostMapper.toEntity(dto, user);
+
         Post savedPost = postRepository.save(post);
         return PostMapper.toResponseDTO(savedPost);
     }

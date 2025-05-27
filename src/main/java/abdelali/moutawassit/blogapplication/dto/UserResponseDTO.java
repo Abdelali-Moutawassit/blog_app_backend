@@ -1,8 +1,11 @@
 package abdelali.moutawassit.blogapplication.dto;
 
+import abdelali.moutawassit.blogapplication.model.Post;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -16,4 +19,5 @@ public class UserResponseDTO {
     private String bio;
     private String profileImageUrl;
     private LocalDateTime createdAt;
+    private List<PostResponseDTO> posts;
 }

@@ -4,6 +4,8 @@ import abdelali.moutawassit.blogapplication.dto.UserRequestDTO;
 import abdelali.moutawassit.blogapplication.dto.UserResponseDTO;
 import abdelali.moutawassit.blogapplication.model.User;
 
+import java.util.stream.Collectors;
+
 public class UserMapper {
 
     public static UserResponseDTO toResponseDTO(User user) {
@@ -17,6 +19,13 @@ public class UserMapper {
                 .bio(user.getBio())
                 .profileImageUrl(user.getProfileImageUrl())
                 .createdAt(user.getCreatedAt())
+                .posts(
+                        user.getPosts() != null
+                                ? user.getPosts().stream()
+                                .map(PostMapper::toResponseDTO)
+                                .collect(Collectors.toList())
+                                : null
+                )
                 .build();
     }
 

@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public class PostResponseDTO {
     private Long id;
     private Long userId;
-    private String userName;        // nom de l'auteur pour affichage (optionnel)
+    private String userName;
     private String content;
     private String imageUrl;
     private LocalDateTime createdAt;

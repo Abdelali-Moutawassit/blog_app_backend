@@ -26,6 +26,7 @@ public class UserService {
         User user = UserMapper.toEntity(requestDTO);
         // Ne pas hasher le password pour l’instant (à ne faire qu’en DEV/test !)
         // user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPosts(null);
         user.setCreatedAt(LocalDateTime.now());
         return UserMapper.toResponseDTO(userRepository.save(user));
     }
@@ -37,8 +38,12 @@ public class UserService {
     }
 
     public List<UserResponseDTO> getAllUsers() {
-        return userRepository.findAll()
-                .stream()
+        List<User> users = userRepository.findAll();
+
+        // Force loading des posts pour chaque user
+        users.forEach(user -> user.getPosts().size());
+
+        return users.stream()
                 .map(UserMapper::toResponseDTO)
                 .collect(Collectors.toList());
     }
