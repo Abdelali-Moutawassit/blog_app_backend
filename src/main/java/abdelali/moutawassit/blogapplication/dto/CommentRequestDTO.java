@@ -13,4 +13,5 @@ public class CommentRequestDTO {
     private Long postId;     // Post commenté
     private String content;  // Texte du commentaire
     private LocalDateTime createdAt;  // Optionnel, souvent géré côté backend
+    private String profileImageUrl;
 }

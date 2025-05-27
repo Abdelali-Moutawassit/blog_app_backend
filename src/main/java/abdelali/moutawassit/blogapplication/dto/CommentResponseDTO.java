@@ -16,4 +16,5 @@ public class CommentResponseDTO {
     private String content;
     private LocalDateTime createdAt;
     private int likeCount;      // nombre de likes sur ce commentaire
+    private  UserRequestDTO user;
 }

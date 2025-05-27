@@ -27,6 +27,7 @@ public class PostMapper {
                 .content(comment.getContent())
                 .createdAt(comment.getCreatedAt())
                 .userId(comment.getUser().getId())
+                .profileImageUrl(comment.getUser().getProfileImageUrl())
                 .build();
     }
 
