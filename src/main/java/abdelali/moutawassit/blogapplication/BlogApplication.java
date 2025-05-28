@@ -27,16 +27,16 @@ public class BlogApplication {
         return args -> {
             if (userRepository.count() == 0) {
                 List<User> users = List.of(
-                        User.builder().fullName("Alice Johnson").username("alicej").email("alice@example.com").password("pass123").bio("Dév web").profileImageUrl("url1").createdAt(LocalDateTime.now()).build(),
-                        User.builder().fullName("Bob Smith").username("bobsmith").email("bob@example.com").password("pass123").bio("Photographe").profileImageUrl("url2").createdAt(LocalDateTime.now()).build(),
-                        User.builder().fullName("Charlie Lee").username("charlie").email("charlie@example.com").password("pass123").bio("Étudiant").profileImageUrl("url3").createdAt(LocalDateTime.now()).build(),
-                        User.builder().fullName("Diana Prince").username("diana").email("diana@example.com").password("pass123").bio("Superhéroïne").profileImageUrl("url4").createdAt(LocalDateTime.now()).build(),
-                        User.builder().fullName("Elon Musk").username("elonm").email("elon@example.com").password("pass123").bio("Visionnaire").profileImageUrl("url5").createdAt(LocalDateTime.now()).build(),
-                        User.builder().fullName("Fatima Zahra").username("fatimaz").email("fatima@example.com").password("pass123").bio("Dév mobile").profileImageUrl("url6").createdAt(LocalDateTime.now()).build(),
-                        User.builder().fullName("George Lucas").username("glucas").email("george@example.com").password("pass123").bio("Réalisateur").profileImageUrl("url7").createdAt(LocalDateTime.now()).build(),
-                        User.builder().fullName("Hassan Rami").username("hassr").email("hassan@example.com").password("pass123").bio("UX/UI Designer").profileImageUrl("url8").createdAt(LocalDateTime.now()).build(),
-                        User.builder().fullName("Ismail Ait").username("ismaila").email("ismail@example.com").password("pass123").bio("Freelancer").profileImageUrl("url9").createdAt(LocalDateTime.now()).build(),
-                        User.builder().fullName("John Doe").username("johnd").email("john@example.com").password("pass123").bio("Dév Java").profileImageUrl("url10").createdAt(LocalDateTime.now()).build()
+                        User.builder().fullName("Alice Johnson").username("Alice Johnson").email("alice@example.com").password("pass123").bio("Dév web").profileImageUrl("https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlciUyMHByb2ZpbGV8ZW58MHx8MHx8fDA%3D").createdAt(LocalDateTime.now()).build(),
+                        User.builder().fullName("Bob Smith").username("Bob Smith").email("bob@example.com").password("pass123").bio("Photographe").profileImageUrl("https://images.unsplash.com/photo-1584999734482-0361aecad844?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fHByb2ZpbGUlMjBwaG90b3xlbnwwfHwwfHx8MA%3D%3D").createdAt(LocalDateTime.now()).build(),
+                        User.builder().fullName("Charlie Lee").username("Charlie Lee").email("charlie@example.com").password("pass123").bio("Étudiant").profileImageUrl("https://img.freepik.com/premium-photo/male-russian-model-face-cosmetology-advertising_1198440-111.jpg").createdAt(LocalDateTime.now()).build(),
+                        User.builder().fullName("Diana Prince").username("Diana Prince").email("diana@example.com").password("pass123").bio("Superhéroïne").profileImageUrl("https://img.freepik.com/premium-photo/happy-young-students-studying-college-library-with-stack-books_21730-4486.jpg?semt=ais_hybrid&w=740").createdAt(LocalDateTime.now()).build(),
+                        User.builder().fullName("Elon Musk").username("Elon Musk").email("elon@example.com").password("pass123").bio("Visionnaire").profileImageUrl("https://img.freepik.com/free-photo/portrait-handsome-student-smiling_23-2148586538.jpg?semt=ais_hybrid&w=740").createdAt(LocalDateTime.now()).build(),
+                        User.builder().fullName("Fatima Zahra").username("Fatima Zahra").email("fatima@example.com").password("pass123").bio("Dév mobile").profileImageUrl("https://img.freepik.com/premium-photo/diverse-group-teenagers-shoot_53876-38892.jpg?w=360").createdAt(LocalDateTime.now()).build(),
+                        User.builder().fullName("George Lucas").username("George Lucas").email("george@example.com").password("pass123").bio("Réalisateur").profileImageUrl("https://img.freepik.com/premium-photo/young-beautiful-businesswoman-against-white-wall_251136-55504.jpg?semt=ais_hybrid&w=740").createdAt(LocalDateTime.now()).build(),
+                        User.builder().fullName("Hassan Rami").username("Hassan Rami").email("hassan@example.com").password("pass123").bio("UX/UI Designer").profileImageUrl("https://img.freepik.com/photos-premium/portrait-jeune-homme-intelligent-souriant-heureux-lunettes_274222-6633.jpg?w=360").createdAt(LocalDateTime.now()).build(),
+                        User.builder().fullName("Ismail Ait").username("Ismail Ait").email("ismail@example.com").password("pass123").bio("Freelancer").profileImageUrl("https://img.freepik.com/photos-premium/portrait-jeune-bel-homme-lunettes_127089-1348.jpg?w=360").createdAt(LocalDateTime.now()).build(),
+                        User.builder().fullName("John Doe").username("John Doe").email("john@example.com").password("pass123").bio("Dév Java").profileImageUrl("https://static.vecteezy.com/ti/photos-gratuite/p1/3152807-portrait-de-jeune-homme-a-lunettes-sur-fond-noir-gratuit-photo.jpg").createdAt(LocalDateTime.now()).build()
                 );
                 userRepository.saveAll(users);
                 System.out.println("✅ 10 utilisateurs enregistrés avec succès !");
@@ -49,7 +49,7 @@ public class BlogApplication {
                         Post post1 = Post.builder()
                                 .user(user)
                                 .content("Ceci est un post de " + user.getUsername() + ".")
-                                .imageUrl("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBZjmRd6fUkEG7W_2s8gqD8y6W8qqPiAur-g&s")
+                                .imageUrl("https://media.istockphoto.com/id/527343577/photo/looking-for-inspiration.jpg?s=612x612&w=0&k=20&c=ck3lswRHkRpvxurShBPaRj5dvieSo1N0ZPqXA4XdOnk=")
                                 .videoUrl(null)
                                 .createdAt(LocalDateTime.now())
                                 .likeCount(0)
@@ -59,7 +59,7 @@ public class BlogApplication {
                         Post post2 = Post.builder()
                                 .user(user)
                                 .content("Un autre post intéressant par " + user.getUsername() + ".")
-                                .imageUrl("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBZjmRd6fUkEG7W_2s8gqD8y6W8qqPiAur-g&s")
+                                .imageUrl("https://media.istockphoto.com/id/876637476/photo/business-man-working-on-documents-looking-concentrated.jpg?s=612x612&w=0&k=20&c=pJVPO1f2b49gLKu0USXoRHURSD2xSclCmN0RCt2g6oo=")
                                 .createdAt(LocalDateTime.now())
                                 .likeCount(0)
                                 .shareCount(0)

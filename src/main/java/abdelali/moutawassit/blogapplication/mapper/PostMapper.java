@@ -19,6 +19,7 @@ public class PostMapper {
                 .username(user.getUsername())
                 .email(user.getEmail())
                 .profileImageUrl(user.getProfileImageUrl())
+                .profileImageUrl(user.getProfileImageUrl())
                 .build();
     }
 
@@ -41,6 +42,7 @@ public class PostMapper {
                 .content(post.getContent())
                 .imageUrl(post.getImageUrl())
                 .createdAt(post.getCreatedAt())
+                .profileImageUrl(post.getUser() != null ? post.getUser().getProfileImageUrl() : null)
                 .likedBy(post.getLikes().stream()
                         .map(PostMapper::toUserDTO)
                         .collect(Collectors.toSet()))

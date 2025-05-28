@@ -14,6 +14,7 @@ public class PostResponseDTO {
     private Long id;
     private Long userId;
     private String userName;
+    private String profileImageUrl;
     private String content;
     private String imageUrl;
     private LocalDateTime createdAt;
