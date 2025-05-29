@@ -14,4 +14,5 @@ public class CommentRequestDTO {
     private String content;  // Texte du commentaire
     private LocalDateTime createdAt;  // Optionnel, souvent géré côté backend
     private String profileImageUrl;
+    private String userName;
 }
