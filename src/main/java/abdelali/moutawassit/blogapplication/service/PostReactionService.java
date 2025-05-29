@@ -36,7 +36,8 @@ public class PostReactionService {
 
         existingReaction.ifPresent(oldReaction -> {
             if (oldReaction.getType().name().equals("LIKE")) {
-                post.setLikeCount(post.getLikeCount() - 1); // enlever ancien like
+                post.setLikeCount(post.getLikeCount() - 1);
+                post.getLikes().remove(user); // retirer l'utilisateur des likes
             }
             postReactionRepository.delete(oldReaction);
         });
@@ -44,13 +45,46 @@ public class PostReactionService {
         PostReaction newReaction = PostReactionMapper.toEntity(dto, user, post);
         PostReaction savedReaction = postReactionRepository.save(newReaction);
 
-        // si la nouvelle réaction est un LIKE, on incrémente
+        if (newReaction.getType().name().equals("LIKE")) {
             post.setLikeCount(post.getLikeCount() + 1);
+            post.getLikes().add(user); // ajouter l'utilisateur à la liste des likes
+        }
 
-        postRepository.save(post); // très important
+        postRepository.save(post); // très important pour persister les changements
 
         return PostReactionMapper.toResponseDTO(savedReaction);
     }
+
+
+
+
+//    public PostReactionResponseDTO addReaction(Long userId, Long postId, PostReactionRequestDTO dto) {
+//        User user = userRepository.findById(userId)
+//                .orElseThrow(() -> new RuntimeException("Utilisateur introuvable"));
+//
+//        Post post = postRepository.findById(postId)
+//                .orElseThrow(() -> new RuntimeException("Post introuvable"));
+//
+//        Optional<PostReaction> existingReaction = postReactionRepository.findByUserAndPost(user, post);
+//
+//        existingReaction.ifPresent(oldReaction -> {
+//            if (oldReaction.getType().name().equals("LIKE")) {
+//                post.setLikeCount(post.getLikeCount() - 1); // enlever ancien like
+//            }
+//            postReactionRepository.delete(oldReaction);
+//        });
+//
+//        PostReaction newReaction = PostReactionMapper.toEntity(dto, user, post);
+//        PostReaction savedReaction = postReactionRepository.save(newReaction);
+//
+//
+//        // si la nouvelle réaction est un LIKE, on incrémente
+//            post.setLikeCount(post.getLikeCount() + 1);
+//
+//        postRepository.save(post); // très important
+//
+//        return PostReactionMapper.toResponseDTO(savedReaction);
+//    }
 
 //    public PostReactionResponseDTO addReaction(Long userId, Long postId, PostReactionRequestDTO dto) {
 //        User user = userRepository.findById(userId)

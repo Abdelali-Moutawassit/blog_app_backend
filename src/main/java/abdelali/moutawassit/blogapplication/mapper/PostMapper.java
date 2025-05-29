@@ -15,6 +15,7 @@ public class PostMapper {
 
     public static UserRequestDTO toUserDTO(User user) {
         return UserRequestDTO.builder()
+                .id(user.getId())
                 .fullName(user.getFullName())
                 .username(user.getUsername())
                 .email(user.getEmail())
